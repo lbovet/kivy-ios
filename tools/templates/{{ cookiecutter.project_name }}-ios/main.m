@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     // Change the executing path to YourApp
     chdir("YourApp");
 
-    // Special environment to prefer .pyo, and don't write bytecode if .py are found
+    // Don't write bytecode if .py are found
     // because the process will not have a write attribute on the device.
     putenv("PYTHONDONTWRITEBYTECODE=1");
     putenv("PYTHONNOUSERSITE=1");
@@ -52,6 +52,8 @@ int main(int argc, char *argv[]) {
 #if PY_MAJOR_VERSION == 2
     NSLog(@"PythonHome is: %s", (char *)[resourcePath UTF8String]);
     Py_SetPythonHome((char *)[resourcePath UTF8String]);
+    // Prefer .pyo
+    putenv("PYTHONOPTIMIZE=2");
 #else
     NSString *python_home = [NSString stringWithFormat:@"PYTHONHOME=%@", resourcePath, nil];
     putenv((char *)[python_home UTF8String]);
